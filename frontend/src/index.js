@@ -17,7 +17,7 @@ import Campaign from './pages/Campaign';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
-  { path: '/', element: <App/> },
+  { path: '/', element: <LoginPage/> },
   { path: '/dashboard', element: <App/> },
   { path: '/orders', element: <App/> },
   { path: '/customers', element: <App/> },

@@ -1,7 +1,7 @@
 // src/components/ProtectedRoute.js
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useGlobalContext } from '../context/globalContext';
+import { useGlobalContext } from './globalContext';
 
 const ProtectedRoute = ({ element }) => {
     const { isAuthenticated } = useGlobalContext();

@@ -160,7 +160,7 @@ exports.updateCustomer = async (req, res) => {
       }
     }
 
-    // Save updated customer
+    // Save updated cusTtomer
     await customer.save();
 
     res.status(200).json({

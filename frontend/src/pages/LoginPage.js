@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useGlobalContext } from '../context/globalContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 function LoginPage() {
   const navigate = useNavigate();
   const userRef = useRef();
@@ -19,6 +20,8 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [matchPassword, setMatchPassword] = useState('');
+  const [name, setName] = useState(''); // New state for name
+  const [role, setRole] = useState('Customer'); // New state for role
   const [validEmail, setValidEmail] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [validMatch, setValidMatch] = useState(false);
@@ -39,7 +42,7 @@ function LoginPage() {
   }, []);
 
   useEffect(() => {
-    toast('please fill the form');
+    toast('Please fill the form');
   }, [success]);
 
   useEffect(() => {
@@ -61,15 +64,14 @@ function LoginPage() {
       setError('Invalid Entry');
       return;
     }
-    const data = { email, password };
+    const data = { email, password, name, role }; // Include name and role in data
 
     try {
       const response = isLogin ? login(data) : signup(data);
-      console.log(`response:`);
-      console.log(response);
       setEmail('');
       setPassword('');
       setMatchPassword('');
+      setName('');
     } catch (err) {
       if (!err?.response) {
         setError('No Server Response');
@@ -97,6 +99,20 @@ function LoginPage() {
               {error}
             </p>
             <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
+
+            {!isLogin && (
+              <>
+                <label htmlFor='name'>Name:</label>
+                <input
+                  type='text'
+                  id='name'
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  required={!isLogin}
+                />
+              </>
+            )}
+
             <label htmlFor='email'>
               Email:
               <FontAwesomeIcon
@@ -201,6 +217,20 @@ function LoginPage() {
               </>
             )}
 
+            {!isLogin && (
+              <>
+                <label htmlFor='role'>Role:</label>
+                <select
+                  id='role'
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required>
+                  <option value='Customer'>Customer</option>
+                  <option value='Admin'>Admin</option>
+                </select>
+              </>
+            )}
+
             <button
               disabled={
                 !validEmail || !validPassword || (!isLogin && !validMatch)
@@ -272,7 +302,8 @@ const LoginPageStyled = styled.div`
       text-align: center;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;

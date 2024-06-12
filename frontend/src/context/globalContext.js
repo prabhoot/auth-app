@@ -28,7 +28,7 @@ export const GlobalProvider = ({ children }) => {
     const addCustomer = async (customer) => {
         try {
             console.log(`the customer at a  dd is ${customer}`);
-            const response = await axios.post(`${BASE_URL}customers-add`,{customer},{ headers: {'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}`}});
+            const response = await axios.post(`${BASE_URL}customers-add`,{"customer":customer},{ headers: {'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}`}});
               getCustomers();
         } catch (err) {
             setError(err.response.data.message);
@@ -114,7 +114,7 @@ export const GlobalProvider = ({ children }) => {
             console.error("The id value passed is undefined");
             return false;
         }
-        try {
+    try {
             const response = await axios.post(`${BASE_URL}auth/logout`,{"id":id},{ headers: {'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}`}});
             console.log(response);
             setId(""); // Clear the id state

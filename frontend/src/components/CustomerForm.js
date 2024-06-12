@@ -27,13 +27,13 @@ function CustomerForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(`inputState is ${JSON.stringify(inputState)}`);
+      console.log(`inputState is ${JSON.parse.stringify(inputState)}`);
       
       const response = await addCustomer(JSON.stringify(inputState));
       if (response && response.success) {
         setInputState({
           name: '',
-          email: '',
+          email: '', 
           date: '',
           role: '',
           password: '',
