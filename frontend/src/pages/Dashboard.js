@@ -1,32 +1,27 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useGlobalContext } from '../context/globalContext';
-import { InnerLayout } from '../styles/Layouts';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { useGlobalContext } from "../context/globalContext";
+import { InnerLayout } from "../styles/Layouts";
 
 function Dashboard() {
-  const {
-    totalOrder,
-    customers,
-    orders,
-    totalCustomers,
-    getCustomers,
-    getOrders,
-  } = useGlobalContext();
-  useEffect(() => {
-    getCustomers();
-    // eslint-disable-next-line
-    getOrders();
-  }, []);
-
-  return (
+  const { user, getAllUsers, getOrders, loading } = useGlobalContext();
+  // Redirect if user is not logged in
+  // if (!user) {
+  //   return (window.location.href = "/");
+  // }
+  // Render the dashboard after loading is complete
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <DashboardStyled>
       <InnerLayout>
-        <h1>Admin Dashboard</h1>
+        <center>
+          <h1>{`WELCOME!! To ${user?.role} Dashboard`}</h1>
+        </center>
       </InnerLayout>
     </DashboardStyled>
   );
 }
-
 const DashboardStyled = styled.div`
   .stats-con {
     display: grid;

@@ -25,14 +25,14 @@ function Orders() {
             <OrdersForm />
           </div>
           <div className='orders'>
-            {orders.data.map((order) => {
+            {/* {orders.data?.map((order) => {
               const { _id, title, amount, date, category, description, type } =
                 order;
               console.log(order);
               return (
                 <FormItems key={_id} id={_id} title={title} description={description} amount={amount} date={date} type={type} category={category} indicatorColor='var(--color-red)' deleteItem={deleteOrder} />
               );
-            })}
+            })} */}
           </div>
         </div>
       </InnerLayout>

@@ -1,62 +1,61 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import avatar from '../img/avatar.png';
-import { iLogout } from '../utils/Icons';
-import { menuItems } from '../utils/menuItems';
-import { useGlobalContext } from '../context/globalContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import avatar from "../img/avatar.png";
+import { iLogout, iLogin } from "../utils/Icons";
+import { MenuItems } from "../utils/menuItems";
+import { useGlobalContext } from "../context/globalContext";
+import { User, useAuth0 } from "@auth0/auth0-react";
+
+// currCustomer.current= async ()=> getCustomerById(id);
 
 function Navigation({ active, setActive }) {
-  const navigate = useNavigate();
-  const { logout, customers, getCustomers, id } = useGlobalContext();
+  const { user, logout, loading } = useGlobalContext();
 
-  useEffect(() => {
-    getCustomers();
-  }, []);
-
-  const handleLogout = async () => {
+  const logoutHandler = async () => {
     try {
-      const response = await logout(id); // Assuming logout expects the user ID as an argument
-      console.log(`the value in fe is ${id}`);
-      console.log('Logout response:', response);
-      if (response) {
-        console.log('Navigating to /auth/login...');
-        navigate('/auth/login', {
-          replace: true,
-          state: { from: '/auth/logout' },
-        });
-        console.log('Navigated successfully to /auth/login');
-      }
+      await logout();
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   };
+  function capitalizeWords(string) {
+    return string
+      ?.split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
 
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <NavStyled>
-      <div className='user-con'>
-        <img src={avatar} alt='' />
-        <div className='text'>
-          <h2>Prabhoot</h2>
-          <p>CRM Application</p>
+      <div className="user-con">
+        {user && user?.DP ? (
+          <img src={user?.DP} alt="profile picture " />
+        ) : (
+          <img src={avatar} alt="default avatar" />
+        )}
+        <div className="text">
+          <h2>{user ? capitalizeWords(user?.name) : "Prabhoot"}</h2>
+          <p>AUTH Application</p>
         </div>
       </div>
-      <ul className='menu-items'>
-        {menuItems.map((item) => (
+      <ul className="menu-items">
+        {MenuItems().map((item) => (
           <li
             key={item.id}
             onClick={() => {
               setActive(item.id);
-              navigate(item.link);
             }}
-            className={active === item.id ? 'active' : ''}>
+            className={active === item.id ? "active" : ""}
+          >
             {item.icon}
             <span>{item.title}</span>
           </li>
         ))}
       </ul>
-      <div className='bottom-nav'>
-        <span onClick={handleLogout}>{iLogout} Log Out</span>
+      <div className="bottom-nav">
+        <span onClick={logoutHandler}>{iLogout} Log Out</span>
       </div>
     </NavStyled>
   );
@@ -127,7 +126,7 @@ const NavStyled = styled.nav`
       color: rgba(34, 34, 96, 1) !important;
     }
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0;
       top: 0;
@@ -143,6 +142,7 @@ const NavStyled = styled.nav`
       -ms-user-select: none; /* IE 10 and IE 11 */
       user-select: none; /* Standard syntax */
       cursor: pointer;
+      padding: 8px;
     }
   }
 `;

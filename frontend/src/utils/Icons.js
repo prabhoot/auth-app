@@ -13,6 +13,7 @@ export const bitcoin = <i className='fa-brands fa-bitcoin'></i>;
 export const piggy = <i className='fa-solid fa-piggy-bank'></i>;
 export const yt = <i className='fa-brands fa-youtube'></i>;
 export const card = <i className='fa-brands fa-cc-visa'></i>;
+export const customerIcon = <i className="fa-solid fa-user"></i>;
 export const users = <i className='fa-solid fa-users-between-lines'></i>;
 export const rupee = <i class='fa-solid fa-indian-rupee-sign'></i>;
 export const calender = <i className='fa-solid fa-calendar'></i>;

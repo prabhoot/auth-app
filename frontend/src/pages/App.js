@@ -1,43 +1,40 @@
-import React, { useState, useMemo } from 'react';
-import styled from 'styled-components';
-import bg from '../img/bg.png';
-import { MainLayout } from '../styles/Layouts';
-import Orb from '../components/Orb';
-import Navigation from '../components/Navigation';
-import 'react-toastify/dist/ReactToastify.css';
-import { useGlobalContext } from '../context/globalContext';
+import React, { useState, useMemo } from "react";
+import styled from "styled-components";
+import bg from "../img/bg.png";
+import { MainLayout } from "../styles/Layouts";
+import Orb from "../components/Orb";
+import Navigation from "../components/Navigation";
+import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "../pages/Dashboard";
 import Campaign from "../pages/Campaign";
 import Orders from "../pages/Orders";
-import Customers from "../pages/Customers";
+import Customers from "./Customers";
 function App() {
   const [active, setActive] = useState(1);
-  const { global } = useGlobalContext();
-  const displayData = () => {
-    switch(active){
-      case 1:
-        return <Dashboard />
-      case 2:
-        return <Campaign />
-      case 3:
-        return <Customers />
-      case 4: 
-        return <Orders/>
-      default: 
-        return <Dashboard />
-    }
-  }
-  // console.log(global);
+
   const orbMemo = useMemo(() => {
     return <Orb />;
   }, []);
+
   return (
-    <AppStyled bg={bg} className='App'>
+    <AppStyled bg={bg} className="App">
       {orbMemo}
       <MainLayout>
         <Navigation active={active} setActive={setActive} />
-        <main>{displayData()}</main>
-      </MainLayout>
+        <main>
+          {active === 1 ? (
+            <Dashboard />
+          ) : active === 2 ? (
+            <Campaign />
+          ) : active === 3 ? (
+            <Customers />
+          ) : active === 4 ? (
+            <Orders />
+          ) : (
+            <Dashboard />
+          )}
+        </main>
+      </MainLayout>{" "}
     </AppStyled>
   );
 }
@@ -60,3 +57,11 @@ const AppStyled = styled.div`
 `;
 
 export default App;
+
+/*
+2. useeffect me fetch
+3. allUsers -- aa raha hai but problem hai 
+4. useeffect of every page will run getToken if not then user will be redirected to login page
+5. card compontent creation.
+7. signup mode always user-check
+*/

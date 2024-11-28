@@ -1,24 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
-import { dateFormat } from '../utils/dateFormat';
-import { calender, rupee, trash, users } from '../utils/Icons';
-import Button from '../utils/Button';
-
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { dateFormat } from "../utils/dateFormat";
+import { calender, rupee, trash, users } from "../utils/Icons";
+import Button from "../utils/Button";
+const { useGlobalContext } = require("../context/globalContext");
 function FormItems({
   id,
   title,
-  amount,
+  amount = 0,
   date,
   role,
-  deleteCustomer,
+  // deleteUser,
   indicatorColor,
 }) {
+  const { deleteUser, user } = useGlobalContext();
   return (
     <FormItemsStyled indicator={indicatorColor}>
-      <div className='content'>
+      <div className="content">
         <h5>{title}</h5>
-        <div className='inner-content'>
-          <div className='text'>
+        <div className="inner-content">
+          <div className="text">
             <p>
               {rupee} {amount}
             </p>
@@ -30,18 +31,20 @@ function FormItems({
               {role}
             </p>
           </div>
-          <div className='btn-con'>
-            <Button
-              icon={trash}
-              bPad={'1rem'}
-              bRad={'50%'}
-              bg={'var(--primary-color'}
-              color={'#fff'}
-              iColor={'#fff'}
-              hColor={'var(--color-green)'}
-              onClick={() => deleteCustomer(id)}
-            />
-          </div>
+          {user.role === "Admin" && (
+            <div className="btn-con">
+              <Button
+                icon={trash}
+                bPad={"1rem"}
+                bRad={"50%"}
+                bg={"var(--primary-color"}
+                color={"#fff"}
+                iColor={"#fff"}
+                hColor={"var(--color-green)"}
+                onClick={() => deleteUser(id)}
+              />
+            </div>
+          )}
         </div>
       </div>
     </FormItemsStyled>
@@ -84,7 +87,7 @@ const FormItemsStyled = styled.div`
       padding-left: 2rem;
       position: relative;
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 50%;

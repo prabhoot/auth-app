@@ -1,38 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './pages/App';
-import { GlobalProvider } from './context/globalContext';
-import { GlobalStyle } from './styles/GlobalStyle';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import App from "./pages/App";
+import { GlobalProvider } from "./context/globalContext";
+import { GlobalStyle } from "./styles/GlobalStyle";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Auth0Provider } from "@auth0/auth0-react";
 
-import Dashboard from './pages/Dashboard';
-import LoginPage from './pages/LoginPage';
+import Dashboard from "./pages/Dashboard";
+import LoginPage from "./pages/LoginPage";
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Orders from './pages/Orders';
-import Customers from './pages/Customers';
-import Campaign from './pages/Campaign';
-<script src='https://cdn.lordicon.com/lordicon.js'></script>;
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import PageNotFound from "./pages/PageNotFound";
+import Main from "./pages/Main.js";
+<script src="https://cdn.lordicon.com/lordicon.js"></script>;
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
-  { path: '/', element: <LoginPage/> },
-  { path: '/dashboard', element: <App/> },
-  { path: '/orders', element: <App/> },
-  { path: '/customers', element: <App/> },
-  { path: '/Campaign', element: <App/> },
-  { path: '/auth/login', element: <LoginPage /> },
+  { path: "/", element: <Main /> },
+  { path: "*", element: <PageNotFound /> },
 ]);
 
 root.render(
-    <>
-    <GlobalStyle />
-    <GlobalProvider>
-      <RouterProvider router={router}>
-        <App/>
-        <ToastContainer/>
-      </RouterProvider>
-    </GlobalProvider>
-    </>
+  <>
+    {/* <StrictMode> */}
+      <GlobalStyle />
+        <GlobalProvider>
+          <RouterProvider router={router}>
+            <Main />
+          </RouterProvider>
+        </GlobalProvider>
+        <ToastContainer />
+    {/* </StrictMode> */}
+  </>
 );

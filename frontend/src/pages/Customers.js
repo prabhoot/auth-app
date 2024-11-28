@@ -1,48 +1,62 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useGlobalContext } from '../context/globalContext';
-import { InnerLayout } from '../styles/Layouts';
-import CustomerForm from '../components/CustomerForm';
-import FormItems from '../components/FormItems';
-
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { useGlobalContext } from "../context/globalContext";
+import { InnerLayout } from "../styles/Layouts";
+import CustomerForm from "../components/CustomerForm";
+import FormItems from "../components/FormItems.js";
+const updateHandler = (e) => {
+  console.log("first");
+}
 function Customers() {
-  const {
-    addCustomer,
-    customers,
-    getCustomers,
-    deleteCustomer,
-    totalCustomers,
-    id,
-  } = useGlobalContext();
-  useEffect(() => {
-    getCustomers();
-    console.log(` the customer is: ${customers}`);
-  }, []);
-  return (
+  const { getAllUsers, deleteUser, allUsers, loading, user } =
+    useGlobalContext();
+  // useEffect(() => {
+  //   getAllUsers();
+  // }, []);
+  // useEffect(() => {
+  //   console.log(allUsers);
+  // }, [loading]);
+  const formData = {  name: "John Doe", email: "testing@gmail.com", role: "User"};
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <CustomerStyled>
       <InnerLayout>
         <h1>Customers</h1>
-        <h2 className='total-customers'>
-          Total Customers: <span>{totalCustomers()}</span>
-        </h2>
-        <div className='customers-content'>
-          <div className='form-container'>
-            <CustomerForm />
-          </div>
-          <h2 className='list-heading'>
-              <span>All Customers</span>
+        {(user.role === "Admin" || user.role === "Moderator") && (
+          <h2 className="total-customers">
+            Total Customers: <span>{allUsers?.data?.length || 0}</span>
           </h2>
-          <div className='customers'>
-            {customers.data.map((customer) => {
-              const { _id, name, email, role, total_spends, last_visit_date, isOnline, } = customer;
-              return (
-                <FormItems key={_id} id={_id} title={name} email={email} amount={total_spends} date={last_visit_date} role={role}
-                 indicatorColor={ isOnline ? 'var(--color-green)' : 'var(--color-red)'}
-                  deleteCustomer={()=>{deleteCustomer(id)}}
-                />
-              );
-            })}
+        )}
+        <div className="customers-content">
+          <div className="form-container">
+            <CustomerForm formData={formData}/>
           </div>
+          {(user.role === "Admin" || user.role === "Moderator") && (
+            <>
+              <h2 className="list-heading">
+                <span>All Customers</span>
+              </h2>
+              <div className="customers" onClick={updateHandler}>
+                {allUsers?.data?.map((customer) => {
+                  const { _id, name, email, role, permissions } = customer;
+                  return (
+                    <FormItems
+                      key={_id}
+                      id={_id}
+                      title={name}
+                      email={email}
+                      role={role}
+                      deleteUser={() => {
+                        deleteUser(_id);
+                      }}
+                      permissions={permissions}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </InnerLayout>
     </CustomerStyled>
@@ -90,7 +104,7 @@ const CustomerStyled = styled.div`
       color: var(--color-red);
     }
   }
-  .list-heading{
+  .list-heading {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,5 +126,4 @@ const CustomerStyled = styled.div`
     }
   }
 `;
-
 export default Customers;

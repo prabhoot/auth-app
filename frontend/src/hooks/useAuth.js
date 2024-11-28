@@ -3,14 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../context/globalContext';
 
 const useAuth = () => {
-  const { global } = useGlobalContext();
+  const { getMe } = useGlobalContext();
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate('/login');
+  //   }else{
+  //     navigate('/dashboard');
+  //   }
+  // }, [global, navigate]);
   useEffect(() => {
-    if (!global.isAuthenticated) {
-      navigate('/login');
+    if (!isAuthenticated) {
+      getMe();
     }
-  }, [global, navigate]);
+  } , [navigate]);
 
   return global.isAuthenticated;
 };
