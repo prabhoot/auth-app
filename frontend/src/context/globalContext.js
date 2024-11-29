@@ -2,7 +2,7 @@ import React, { useContext, useState, createContext, useEffect } from "react";
 import axios from "../utils/axiosConfig.utils.js";
 const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
-  const BASE_URL = "http://localhost:4000";
+  const BASE_URL = "https://auth-app-cba7.onrender.com/";
   const [user, setUser] = useState();
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
