@@ -1,13 +1,15 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "A backend server for handling API requests, authentication, and more.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js", 
+    "dev": "nodemon index.js", 
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["node", "express", "backend", "authentication", "api"],
+  "author": "Prabhoot",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.2",
@@ -21,7 +23,20 @@
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
     "mongoose": "^8.4.1",
-    "nodemon": "^3.1.3",
     "universal-cookie": "^7.1.4"
-  }
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prabhoot/auth-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prabhoot/auth-app/issues"
+  },
+  "homepage": "https://github.com/prabhoot/auth-app#readme"
 }
