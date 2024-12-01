@@ -24,7 +24,6 @@ const router = createBrowserRouter([
 
 root.render(
   <>
-    {/* <StrictMode> */}
       <GlobalStyle />
         <GlobalProvider>
           <RouterProvider router={router}>
@@ -32,6 +31,5 @@ root.render(
           </RouterProvider>
         </GlobalProvider>
         <ToastContainer />
-    {/* </StrictMode> */}
   </>
 );

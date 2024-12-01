@@ -2,7 +2,9 @@ import React, { useContext, useState, createContext, useEffect } from "react";
 import axios from "../utils/axiosConfig.utils.js";
 const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
-  const BASE_URL = "https://auth-app-cba7.onrender.com";
+  
+  const BASE_URL=(process.env?.DEV)?("http://localhost:4000"):("https://auth-app-cba7.onrender.com")
+  console.log(process.env?.DEV);
   const [user, setUser] = useState();
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
@@ -10,9 +12,18 @@ export const GlobalProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [success, setSuccess] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
+  const [formData, setFormData] = useState({
+    name: null,
+    email: null,
+    date: null,
+    role: null,
+    password: null,
+    newPassword: null,
+    description: null,
+  });
   useEffect(() => {
     console.log(user);
-  }, [user,[]]);
+  }, [user, []]);
   const getToken = () => {
     try {
       // Assuming the token is stored in localStorage
@@ -85,7 +96,7 @@ export const GlobalProvider = ({ children }) => {
     try {
       setLoading(true);
       await axios.delete(`${BASE_URL}/users/${id}`);
-        window.location.href = "/";
+      window.location.href = "/";
       console.log(`User with id ${id} deleted successfully.`);
     } catch (error) {
       console.error(

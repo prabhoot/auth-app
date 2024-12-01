@@ -2,17 +2,15 @@ import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import Orb from "../components/Orb";
 import { useGlobalContext } from "../context/globalContext";
-import { useNavigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 import { InnerLayout } from "../styles/Layouts.js";
 function LoginPage() {
-  const navigate = useNavigate();
   const {
     login,
     register,
     setCurrCustomer,
     setIsAuthenticated,
     error,
+    loading,
     setError,
   } = useGlobalContext();
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -31,6 +29,7 @@ function LoginPage() {
     const data = { email, password, name, role }; // Include name and role in data
 
     try {
+      loading && setError("PLEASE WAIT you will be redirected soon... after some internal verification");
       const response = isLoginForm ? await login(data) : await register(data);
       setEmail("");
       setPassword("");
@@ -52,6 +51,8 @@ function LoginPage() {
       } else {
         setError(err.message || "Registration/Login Failed");
       }
+    } finally {
+      setError("");
     }
   };
 
@@ -125,7 +126,9 @@ function LoginPage() {
               </>
             )}
 
-            <button type="submit">{isLoginForm ? "Login" : "Sign Up"}</button>
+            <button type="submit">
+              {isLoginForm ? "Login" : "Sign Up"}
+            </button>
           </form>
           <p
             className="switch-form"
@@ -192,7 +195,7 @@ const LoginPageStyled = styled.div`
     justify-content: center;
     align-items: center;
     /* max-width: 18vw; */
-
+    
     h2 {
       text-align: center;
       margin-bottom: 1rem;
@@ -227,6 +230,11 @@ const LoginPageStyled = styled.div`
         box-shadow: 0 0 8px rgba(255, 100, 124, 0.3);
       }
     }
+    [button]:disabled {
+    background: #ddd; /* Disabled background color */
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+    opacity: 0.6; /* Slight transparency for visual cue */
+  }
 
     button {
       width: 100%;

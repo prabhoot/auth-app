@@ -4,9 +4,7 @@ import { useGlobalContext } from "../context/globalContext";
 import { InnerLayout } from "../styles/Layouts";
 import CustomerForm from "../components/CustomerForm";
 import FormItems from "../components/FormItems.js";
-const updateHandler = (e) => {
-  console.log("first");
-}
+
 function Customers() {
   const { getAllUsers, deleteUser, allUsers, loading, user } =
     useGlobalContext();
@@ -16,7 +14,6 @@ function Customers() {
   // useEffect(() => {
   //   console.log(allUsers);
   // }, [loading]);
-  const formData = {  name: "John Doe", email: "testing@gmail.com", role: "User"};
   return loading ? (
     <div>Loading...</div>
   ) : (
@@ -30,16 +27,16 @@ function Customers() {
         )}
         <div className="customers-content">
           <div className="form-container">
-            <CustomerForm formData={formData}/>
+            <CustomerForm/>
           </div>
           {(user.role === "Admin" || user.role === "Moderator") && (
             <>
               <h2 className="list-heading">
                 <span>All Customers</span>
               </h2>
-              <div className="customers" onClick={updateHandler}>
+              <div className="customers">
                 {allUsers?.data?.map((customer) => {
-                  const { _id, name, email, role, permissions } = customer;
+                const { _id, name, email, role, permissions } = customer;
                   return (
                     <FormItems
                       key={_id}

@@ -3,15 +3,14 @@ import LoginPage from "./LoginPage.js";
 import App from "./App.js";
 const { useGlobalContext } = require("../context/globalContext");
 function Main() {
-  const { getMe,getAllUsers,user } = useGlobalContext();
+  const { getMe,getAllUsers,user,isAuthenticated } = useGlobalContext();
   useEffect(() => {
     getMe();
   }, []);
   useEffect(() => {
-    getAllUsers();
+    isAuthenticated && getAllUsers();
   }, [user]);
 
-  const { isAuthenticated } = useGlobalContext();
   return isAuthenticated ? <App /> : <LoginPage />;
 }
 export default Main;

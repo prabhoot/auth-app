@@ -1,21 +1,24 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { dateFormat } from "../utils/dateFormat";
-import { calender, rupee, trash, users } from "../utils/Icons";
+import { calender, editButton, rupee, trash, users } from "../utils/Icons";
 import Button from "../utils/Button";
 const { useGlobalContext } = require("../context/globalContext");
-function FormItems({
-  id,
-  title,
-  amount = 0,
-  date,
-  role,
-  // deleteUser,
-  indicatorColor,
-}) {
+
+
+function FormItems({ id, title, amount = 0, date, role, indicatorColor }) {
   const { deleteUser, user } = useGlobalContext();
+  const updateHandler = (user) => {
+    console.log(user._id);
+    
+  };
   return (
-    <FormItemsStyled indicator={indicatorColor}>
+    <FormItemsStyled
+      indicator={indicatorColor}
+      onClick={() => {
+        updateHandler(id);
+      }}
+    >
       <div className="content">
         <h5>{title}</h5>
         <div className="inner-content">
@@ -32,17 +35,31 @@ function FormItems({
             </p>
           </div>
           {user.role === "Admin" && (
-            <div className="btn-con">
-              <Button
-                icon={trash}
-                bPad={"1rem"}
-                bRad={"50%"}
-                bg={"var(--primary-color"}
-                color={"#fff"}
-                iColor={"#fff"}
-                hColor={"var(--color-green)"}
-                onClick={() => deleteUser(id)}
-              />
+            <div className="controls">
+              <div className="">
+                <Button
+                  icon={editButton}
+                  bPad={"1rem"}
+                  bRad={"50%"}
+                  bg={"var(--primary-color"}
+                  color={"#fff"}
+                  iColor={"#fff"}
+                  hColor={"var(--color-green)"}
+                  onClick={() => updateHandler(user)}
+                />
+              </div>
+              <div className="">
+                <Button
+                  icon={trash}
+                  bPad={"1rem"}
+                  bRad={"50%"}
+                  bg={"var(--primary-color"}
+                  color={"#fff"}
+                  iColor={"#fff"}
+                  hColor={"var(--color-green)"}
+                  onClick={() => deleteUser(id)}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -107,13 +124,17 @@ const FormItemsStyled = styled.div`
         display: flex;
         align-items: center;
         gap: 1.5rem;
-        p {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
+        /* p {
           color: var(--primary-color);
+          display: flex;
+          align-items: space-between;
+          gap: 0.5rem;
           opacity: 0.8;
-        }
+        } */
+      }
+      .controls {
+        display: flex;
+        gap: 1rem;
       }
     }
   }

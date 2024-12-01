@@ -13,7 +13,7 @@ const getFormattedDate = () => {
 
   return `${day}/${month}/${year}`; // Combine into desired format
 };
-function CustomerForm({ formData }) {
+function CustomerForm() {
   const currDate = new Date();
   const {
     register,
@@ -23,18 +23,32 @@ function CustomerForm({ formData }) {
     setError,
     user,
     allUsers,
-    setAllUsers,
   } = useGlobalContext();
   const [isUpdateForm, setIsUpdateForm] = useState(false);
-  const [inputState, setInputState] = useState({
-    name: `${formData.name || user.name}`,
-    email: `${user.email}`,
-    date: ``,
-    role: `${user.role}`,
-    password: ``,
-    newPassword: ``,
-    description: `Hi! this is ${user.name}`,
-  });
+  const [inputState, setInputState] = useState(() => {
+    // Initialize state with null values if the role is "Admin"
+    if (user.role === "Admin") {
+      return {
+        name: null,
+        email: null,
+        date: null,
+        role: null,
+        password: null,
+        newPassword: null,
+        description: null,
+      };
+    }
+    // Otherwise, initialize with provided values
+    return {
+      name: `${user.name}`,
+      email: `${user.email}`,
+      date: ``,
+      role: `${user.role}`,
+      password: ``,
+      newPassword: ``,
+      description: `Hi! this is ${user.name}`,
+    }});
+
   useEffect(() => {}, [allUsers]);
   const { name, email, date, role, password, newPassword, description } =
     inputState;
