@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import LoginPage from "./LoginPage.js";
 import App from "./App.js";
+import useAuth from "../hooks/useAuth.js";
 const { useGlobalContext } = require("../context/globalContext");
 function Main() {
-  const { getMe,getAllUsers,user,isAuthenticated } = useGlobalContext();
+  const { getMe } = useGlobalContext();
+  const isAuthenticated=useAuth();
   useEffect(() => {
     getMe();
-  }, []);
-  useEffect(() => {
-    isAuthenticated && getAllUsers();
-  }, [user]);
+  }, [isAuthenticated]);
 
   return isAuthenticated ? <App /> : <LoginPage />;
 }

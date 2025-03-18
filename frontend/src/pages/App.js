@@ -6,9 +6,13 @@ import Orb from "../components/Orb";
 import Navigation from "../components/Navigation";
 import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "../pages/Dashboard";
-import Campaign from "../pages/Campaign";
+import Campaign from "./Income";
 import Orders from "../pages/Orders";
 import Customers from "./Customers";
+import Income from "./Income";
+import Expense from "./Expense.js";
+import { useGlobalContext } from "../context/globalContext.js";
+import useAuth from "../hooks/useAuth.js";
 function App() {
   const [active, setActive] = useState(1);
 
@@ -25,11 +29,11 @@ function App() {
           {active === 1 ? (
             <Dashboard />
           ) : active === 2 ? (
-            <Campaign />
+            <Income />
           ) : active === 3 ? (
-            <Customers />
+            <Expense />
           ) : active === 4 ? (
-            <Orders />
+            <Customers />
           ) : (
             <Dashboard />
           )}

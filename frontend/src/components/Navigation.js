@@ -4,13 +4,14 @@ import avatar from "../img/avatar.png";
 import { iLogout, iLogin } from "../utils/Icons";
 import { MenuItems } from "../utils/menuItems";
 import { useGlobalContext } from "../context/globalContext";
-import { User, useAuth0 } from "@auth0/auth0-react";
 
 // currCustomer.current= async ()=> getCustomerById(id);
 
 function Navigation({ active, setActive }) {
-  const { user, logout, loading } = useGlobalContext();
-
+  const { me, logout, getMe,updateHandler } = useGlobalContext();
+  useEffect(() => {
+    getMe();
+  }, []);
   const logoutHandler = async () => {
     try {
       await logout();
@@ -25,18 +26,16 @@ function Navigation({ active, setActive }) {
       .join(" ");
   }
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
+  return (
     <NavStyled>
       <div className="user-con">
-        {user && user?.DP ? (
-          <img src={user?.DP} alt="profile picture " />
+        {me && me?.DP ? (
+          <img src={me?.DP} alt="profile picture " />
         ) : (
           <img src={avatar} alt="default avatar" />
         )}
         <div className="text">
-          <h2>{user ? capitalizeWords(user?.name) : "Prabhoot"}</h2>
+          <h2>{me ? capitalizeWords(me?.name) : "Prabhoot"}</h2>
           <p>AUTH Application</p>
         </div>
       </div>

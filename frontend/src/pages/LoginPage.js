@@ -31,6 +31,7 @@ function LoginPage() {
     try {
       loading && setError("PLEASE WAIT you will be redirected soon... after some internal verification");
       const response = isLoginForm ? await login(data) : await register(data);
+      
       setEmail("");
       setPassword("");
       setMatchPassword("");

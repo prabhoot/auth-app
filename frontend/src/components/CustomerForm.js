@@ -4,15 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useGlobalContext } from "../context/globalContext";
 import Button from "../utils/Button";
-import { plus } from "../utils/Icons";
-const getFormattedDate = () => {
-  const now = new Date(); // Get the current date
-  const day = String(now.getDate()).padStart(2, "0"); // Get the day and pad with 0 if needed
-  const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based, so add 1
-  const year = now.getFullYear(); // Get the full year
 
-  return `${day}/${month}/${year}`; // Combine into desired format
-};
 function CustomerForm() {
   const currDate = new Date();
   const {
@@ -21,35 +13,46 @@ function CustomerForm() {
     error,
     updateUserFromAdmin,
     setError,
-    user,
     allUsers,
+    me,
+    user,
+    inputState,
+    setInputState,
+    setFormState,
+    isUpdateForm,
+    setIsUpdateForm,
+    setAllUsers
   } = useGlobalContext();
-  const [isUpdateForm, setIsUpdateForm] = useState(false);
-  const [inputState, setInputState] = useState(() => {
-    // Initialize state with null values if the role is "Admin"
-    if (user.role === "Admin") {
-      return {
-        name: null,
-        email: null,
-        date: null,
-        role: null,
-        password: null,
-        newPassword: null,
-        description: null,
-      };
+
+  const cancelHandler = async (id) => {
+    try {
+      setIsUpdateForm(false);
+      setInputState({
+          name: "",
+          role: "",
+          email: "",
+          description: "",
+        });
+      }
+     catch (error) {
+     console.error("Failed to fetch reset form:", error);
     }
-    // Otherwise, initialize with provided values
-    return {
-      name: `${user.name}`,
-      email: `${user.email}`,
+  };
+  
+  if (me.role === "User") {
+    setInputState({
+      name: `${me.name}`,
+      email: `${me.email}`,
       date: ``,
-      role: `${user.role}`,
+      role: `${me.role}`,
       password: ``,
       newPassword: ``,
-      description: `Hi! this is ${user.name}`,
-    }});
+      description: `Hi! this is ${me.name}`,
+    });
+  }
 
   useEffect(() => {}, [allUsers]);
+
   const { name, email, date, role, password, newPassword, description } =
     inputState;
 
@@ -65,25 +68,24 @@ function CustomerForm() {
 
       let response;
 
-      if (user.role === "User") {
-        response = await updateUser(user._id, inputState);
+      if (me.role === "User") {
+        response = await updateUser(me._id, inputState);
       } else if (isUpdateForm) {
         response = await updateUserFromAdmin(user._id, inputState);
-      } else {
+      } else {        
         response = await register(inputState);
-        window.location.href = "/";
-        // if (response) {
-        //   setAllUsers([...allUsers, response.data]);
-        // }
-        // setInputState({
-        //   name: "",
-        //   email: "",
-        //   date: "",
-        //   role: "",
-        //   password: "",
-        //   newPassword: "",
-        //   description: "",
-        // });
+        if (response) {
+          setAllUsers([...allUsers, response.data]);
+        }
+        setInputState({
+          name: "",
+          email: "",
+          date: "",
+          role: "",
+          password: "",
+          newPassword: "",
+          description: "",
+        });
       }
     } catch (error) {
       console.error("Error updating user:", error);
@@ -91,7 +93,7 @@ function CustomerForm() {
   };
 
   return (
-    (user.role === "Admin" || user.role === "User") && (
+    (me.role === "Admin" || me.role === "User") && (
       <CustomerFormStyled onSubmit={handleSubmit}>
         {error && <p className="error">{error}</p>}
         <div className="input-control">
@@ -107,7 +109,7 @@ function CustomerForm() {
           <input
             value={email}
             type="text"
-            disabled={user.role === "User"} // Dynamically disable the input based on user.role
+            disabled={me.role === "User"} // Dynamically disable the input based on me.role
             name={"email"}
             placeholder={"Customer email"}
             onChange={handleInput("email")}
@@ -136,9 +138,9 @@ function CustomerForm() {
             <option value="" disabled>
               Select Option
             </option>
-            {user.role === "Admin" && <option value="Admin">Admin</option>}
+            {me.role === "Admin" && <option value="Admin">Admin</option>}
             <option value="User">User</option>
-            {(user.role === "Moderator" || user.role === "Admin") && (
+            {(me.role === "Moderator" || me.role === "Admin") && (
               <option value="Moderator">Moderator</option>
             )}
           </select>
@@ -152,7 +154,7 @@ function CustomerForm() {
             onChange={handleInput("password")}
           />
         </div>
-        {user.role === "User" && (
+        {me.role === "User" && (
           <div className="input-control">
             <input
               type="text"
@@ -177,8 +179,8 @@ function CustomerForm() {
         <div className="submit-btn">
           <Button
             name={
-              user.role === "User"
-                ? "Save & Exit"
+              me.role === "User"
+                ? "Save"
                 : isUpdateForm
                 ? "Update Customer"
                 : "Add Customer"
@@ -188,6 +190,17 @@ function CustomerForm() {
             bg={"var(--color-accent"}
             color={"#fff"}
           />
+
+          {isUpdateForm && (
+            <Button
+              name="Cancel"
+              bPad={".8rem 1.6rem"}
+              bRad={"30px"}
+              bg={"var(--color-accent"}
+              color={"#fff"}
+              onClick={()=>{cancelHandler()}}
+            />
+          )}
         </div>
       </CustomerFormStyled>
     )
@@ -234,6 +247,10 @@ const CustomerFormStyled = styled.form`
     }
   }
   .submit-btn {
+    display: flex;
+    justify-content: left;
+    gap: 2rem; /* Space between buttons */
+    
     button {
       box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
       &:hover {
@@ -241,6 +258,7 @@ const CustomerFormStyled = styled.form`
       }
     }
   }
+
 `;
 
 export default CustomerForm;

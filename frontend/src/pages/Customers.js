@@ -6,37 +6,38 @@ import CustomerForm from "../components/CustomerForm";
 import FormItems from "../components/FormItems.js";
 
 function Customers() {
-  const { getAllUsers, deleteUser, allUsers, loading, user } =
-    useGlobalContext();
-  // useEffect(() => {
-  //   getAllUsers();
-  // }, []);
-  // useEffect(() => {
-  //   console.log(allUsers);
-  // }, [loading]);
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
+  const {
+    getAllUsers,
+    deleteUser,
+    allUsers,
+    isAuthenticated,
+    me,
+  } = useGlobalContext();
+  useEffect(() => {
+    isAuthenticated && getAllUsers();
+  }, []);
+
+  return (
     <CustomerStyled>
       <InnerLayout>
         <h1>Customers</h1>
-        {(user.role === "Admin" || user.role === "Moderator") && (
+        {(me.role === "Admin" || me.role === "Moderator") && (
           <h2 className="total-customers">
             Total Customers: <span>{allUsers?.data?.length || 0}</span>
           </h2>
         )}
         <div className="customers-content">
           <div className="form-container">
-            <CustomerForm/>
+            <CustomerForm />
           </div>
-          {(user.role === "Admin" || user.role === "Moderator") && (
+          {(me.role === "Admin" || me.role === "Moderator") && (
             <>
               <h2 className="list-heading">
                 <span>All Customers</span>
               </h2>
               <div className="customers">
                 {allUsers?.data?.map((customer) => {
-                const { _id, name, email, role, permissions } = customer;
+                  const { _id, name, email, role, permissions } = customer;
                   return (
                     <FormItems
                       key={_id}

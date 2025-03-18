@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user.model.js");
 const { Permissions } = require("../constants.js");
 const jwt = require("jsonwebtoken");
-const JWT_EXPIRY = process.env.JWT_EXPIRY || "1h"; // Default to 1 hour if not set
+const JWT_EXPIRY = process.env.JWT_EXPIRY || "1h"; // Default to 1 hours if not set
 
 exports.registerUser = async (req, res) => {
   try {
@@ -54,7 +54,7 @@ exports.getMe = async (req, res) => {
         message: "User not found",
       });
     }
-    const response= await User.findById(user.id);
+    const response = await User.findById(user.id);
     return res.status(200).json({
       success: true,
       message: "User found",
@@ -71,19 +71,20 @@ exports.getMe = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const activeUser = req.session.user;
-    if (activeUser?.id) {
-      return res.status(401).json({
-        success: false,
-        message: "User is already have an active session",
-      });
-    }
+    console.log(email, password);
     // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found",
+      });
+    }
+    const activeUser = req.session.user;
+    if (activeUser?.id) {
+      return res.status(401).json({
+        success: false,
+        message: "User is already have an active session",
       });
     }
     // Verify password
@@ -107,13 +108,13 @@ exports.loginUser = async (req, res) => {
       {
         id: user._id,
         email: user.email,
-        role: user.role,
+        role: user?.role || "USER",
         permissions: user.permissions,
       },
       process.env.JWT_SECRET,
       { expiresIn: JWT_EXPIRY } // e.g., "1h" for 1 hour
     );
-      user.password = undefined;
+    user.password = undefined;
     // Send response
     return res.status(200).json({
       success: true,
@@ -122,7 +123,7 @@ exports.loginUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.error(error);
+    console.log(`error from backend:`, error);
     return res.status(500).json({
       success: false,
       message: "Server error",

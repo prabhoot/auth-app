@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 // Middleware to check JWT token
 exports.checkJWT = async (req, res, next) => {
   try {

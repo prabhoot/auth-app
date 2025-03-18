@@ -1,24 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { dateFormat } from "../utils/dateFormat";
 import { calender, editButton, rupee, trash, users } from "../utils/Icons";
 import Button from "../utils/Button";
-const { useGlobalContext } = require("../context/globalContext");
+import { useGlobalContext } from "../context/globalContext";
+
+function FormItems({ id, title, amount = 0, date, role, indicatorColor="",permissions }) {
+  const { deleteUser, me,setUser, setInputState, getUsersById,setIsUpdateForm,getMe,updateHandler } = useGlobalContext();
 
 
-function FormItems({ id, title, amount = 0, date, role, indicatorColor }) {
-  const { deleteUser, user } = useGlobalContext();
-  const updateHandler = (user) => {
-    console.log(user._id);
-    
-  };
+
   return (
-    <FormItemsStyled
-      indicator={indicatorColor}
-      onClick={() => {
-        updateHandler(id);
-      }}
-    >
+    <FormItemsStyled indicator={indicatorColor}>
       <div className="content">
         <h5>{title}</h5>
         <div className="inner-content">
@@ -30,36 +23,32 @@ function FormItems({ id, title, amount = 0, date, role, indicatorColor }) {
               {calender} {dateFormat(date)}
             </p>
             <p>
-              {users}
-              {role}
+              {users} {role}
             </p>
           </div>
-          {user.role === "Admin" && (
+
+          {me.role === "Admin" && (
             <div className="controls">
-              <div className="">
-                <Button
-                  icon={editButton}
-                  bPad={"1rem"}
-                  bRad={"50%"}
-                  bg={"var(--primary-color"}
-                  color={"#fff"}
-                  iColor={"#fff"}
-                  hColor={"var(--color-green)"}
-                  onClick={() => updateHandler(user)}
-                />
-              </div>
-              <div className="">
-                <Button
-                  icon={trash}
-                  bPad={"1rem"}
-                  bRad={"50%"}
-                  bg={"var(--primary-color"}
-                  color={"#fff"}
-                  iColor={"#fff"}
-                  hColor={"var(--color-green)"}
-                  onClick={() => deleteUser(id)}
-                />
-              </div>
+              <Button
+                icon={editButton}
+                bPad={"1rem"}
+                bRad={"50%"}
+                bg={"var(--primary-color)"}
+                color={"#fff"}
+                iColor={"#fff"}
+                hColor={"var(--color-green)"}
+                onClick={() => updateHandler(id)} 
+              />
+              <Button
+                icon={trash}
+                bPad={"1rem"}
+                bRad={"50%"}
+                bg={"var(--primary-color)"}
+                color={"#fff"}
+                iColor={"#fff"}
+                hColor={"var(--color-green)"}
+                onClick={() => deleteUser(id)}
+              />
             </div>
           )}
         </div>
@@ -80,19 +69,6 @@ const FormItemsStyled = styled.div`
   gap: 1rem;
   width: 100%;
   color: #222260;
-  .icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 20px;
-    background: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ffffff;
-    i {
-      font-size: 2.6rem;
-    }
-  }
 
   .content {
     flex: 1;
@@ -120,18 +96,13 @@ const FormItemsStyled = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .text {
         display: flex;
         align-items: center;
         gap: 1.5rem;
-        /* p {
-          color: var(--primary-color);
-          display: flex;
-          align-items: space-between;
-          gap: 0.5rem;
-          opacity: 0.8;
-        } */
       }
+
       .controls {
         display: flex;
         gap: 1rem;

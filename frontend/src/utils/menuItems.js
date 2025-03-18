@@ -1,8 +1,8 @@
-import { customerIcon, dashboard, expenses, transactions, trend } from '../utils/Icons';
+import { customerIcon, dashboard, expenses, settings, transactions, trend } from '../utils/Icons';
 import { useGlobalContext } from '../context/globalContext';
 
 export const MenuItems = () => {
-  const { user } = useGlobalContext();
+  const { me } = useGlobalContext();
 
   return [
     {
@@ -13,21 +13,27 @@ export const MenuItems = () => {
     },
     {
       id: 2,
-      title: 'Campaign',
+      title: 'Incomes',
       icon: transactions,
       link: '/campaign',
     },
     {
       id: 3,
-      title: user.role === 'User' ? 'Settings' : 'Customers',
-      icon: user.role === 'User' ? trend : customerIcon,
-      link: user.role === 'User' ? '/settings' : '/customers',
+      title: 'Expenses',
+      icon: trend,
+      link: '/settings',
     },
+    // {
+    //   id: 3,
+    //   title: me?.role === 'me' ? 'Settings' : 'Customers',
+    //   icon: me?.role === 'me' ? trend : customerIcon,
+    //   link: me?.role === 'me' ? '/settings' : '/customers',
+    // },
     {
       id: 4,
-      title: 'Items',
-      icon: expenses,
-      link: '/orders',
-    },
+      title: me?.role === 'User' ? 'Settings' : 'Customers',
+      icon: me?.role === 'User' ? settings : customerIcon,
+      link: me?.role === 'User' ? '/orders' : '/customers',
+  },
   ];
 };
