@@ -4,9 +4,7 @@ import axios from "../utils/axiosConfig.utils.js";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  // const BASE_URL=(process.env?.DEV)?("http://localhost:4000"):("https://auth-app-cba7.onrender.com")
-  const BASE_URL = "http://localhost:4000";
-  // console.log(process.env?.DEV);
+  const BASE_URL=process.env?.BASE_URL || "https://auth-app-cba7.onrender.com";
 
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
