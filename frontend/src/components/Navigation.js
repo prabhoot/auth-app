@@ -8,7 +8,7 @@ import { useGlobalContext } from "../context/globalContext";
 // currCustomer.current= async ()=> getCustomerById(id);
 
 function Navigation({ active, setActive }) {
-  const { me, logout, getMe,updateHandler } = useGlobalContext();
+  const { me, logout, getMe } = useGlobalContext();
   useEffect(() => {
     getMe();
   }, []);

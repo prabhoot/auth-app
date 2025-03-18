@@ -4,7 +4,8 @@ import axios from "../utils/axiosConfig.utils.js";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  const BASE_URL=process.env?.BASE_URL || "https://auth-app-cba7.onrender.com";
+  const BASE_URL =
+    process.env?.BASE_URL || "https://auth-app-cba7.onrender.com";
 
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
@@ -35,8 +36,6 @@ export const GlobalProvider = ({ children }) => {
 
   // Token handling utility
 
-
-  
   const getToken = () => {
     try {
       const token = localStorage.getItem("token");
@@ -180,12 +179,20 @@ export const GlobalProvider = ({ children }) => {
   const updateHandler = async (id) => {
     try {
       setIsUpdateForm(true);
-      if(id===me._id){getMe();}
+      if (id === me._id) {
+        getMe();
+      }
       const response = await getUsersById(id);
-      const userData=response.data.data;
+      const userData = response.data.data;
       setUser(userData);
-       // Fetch user details 
-      if (userData && userData.name && userData.email && userData.role && userData.permissions[0]) {
+      // Fetch user details
+      if (
+        userData &&
+        userData.name &&
+        userData.email &&
+        userData.role &&
+        userData.permissions[0]
+      ) {
         setInputState({
           name: userData.name,
           role: userData.role,
@@ -197,7 +204,6 @@ export const GlobalProvider = ({ children }) => {
       console.log("Failed to fetch user data:", error);
     }
   };
-
 
   const updateUser = async (id, updatedData) => {
     try {
@@ -252,7 +258,7 @@ export const GlobalProvider = ({ children }) => {
         password: "",
         newPassword: "",
         description: "",
-      })
+      });
       setLoading(false);
     }
   };
@@ -276,7 +282,7 @@ export const GlobalProvider = ({ children }) => {
         const data = await getAllUsers();
         setAllUsers(data.data);
       }
-      
+
       const temp = await response.json();
       console.log("Registration successful:", temp);
       return temp;

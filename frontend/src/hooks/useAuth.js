@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/globalContext";
 
 const useAuth = () => {
   const { getMe, isAuthenticated, setIsAuthenticated } = useGlobalContext(); // Ensure setIsAuthenticated is available
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {

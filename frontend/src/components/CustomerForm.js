@@ -18,7 +18,6 @@ function CustomerForm() {
     user,
     inputState,
     setInputState,
-    setFormState,
     isUpdateForm,
     setIsUpdateForm,
     setAllUsers
@@ -38,20 +37,9 @@ function CustomerForm() {
      console.error("Failed to fetch reset form:", error);
     }
   };
-  
-  if (me.role === "User") {
-    setInputState({
-      name: `${me.name}`,
-      email: `${me.email}`,
-      date: ``,
-      role: `${me.role}`,
-      password: ``,
-      newPassword: ``,
-      description: `Hi! this is ${me.name}`,
-    });
-  }
 
-  useEffect(() => {}, [allUsers]);
+  useEffect(() => {console.log(me);
+  }, []);
 
   const { name, email, date, role, password, newPassword, description } =
     inputState;
