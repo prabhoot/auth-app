@@ -10,11 +10,11 @@ import { plus } from '../../utils/Icons';
 function ExpenseForm() {
     const {addExpense, error, setError} = useGlobalContext()
     const [inputState, setInputState] = useState({
-        title: 's',
-        amount: '1200',
+        title: '',
+        amount: '',
         date: '',
-        category: 'Education',
-        description: 's',
+        category: '',
+        description: '',
     })
 
     const { title, amount, date, category,description } = inputState;
@@ -27,13 +27,13 @@ function ExpenseForm() {
     const handleSubmit = e => {
         e.preventDefault()
         addExpense(inputState)
-        // setInputState({
-        //     title: '',
-        //     amount: '',
-        //     date: '',
-        //     category: '',
-        //     description: '',
-        // })
+        setInputState({
+            title: '',
+            amount: '',
+            date: '',
+            category: '',
+            description: '',
+        })
     }
 
     return (
