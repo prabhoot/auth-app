@@ -21,7 +21,7 @@ app.use(
   cors({
     credentials: true, // Allow credentials (cookies) to be sent
     optionsSuccessStatus: 200, // Some legacy browsers choke on 204
-    origin:['http://localhost:3000',"*"]
+    origin:['http://localhost:3000',"https://auth-app-prabhoot.vercel.app"]
   })
 );
 
