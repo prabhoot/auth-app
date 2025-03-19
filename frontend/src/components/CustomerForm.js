@@ -38,8 +38,8 @@ function CustomerForm() {
     }
   };
 
-  useEffect(() => {console.log(me);
-  }, []);
+  // useEffect(() => {console.log(me);
+  // }, []);
 
   const { name, email, date, role, password, newPassword, description } =
     inputState;
@@ -99,7 +99,7 @@ function CustomerForm() {
             type="text"
             disabled={me.role === "User"} // Dynamically disable the input based on me.role
             name={"email"}
-            placeholder={"Customer email"}
+            placeholder={me.role !== "User"?"Customer email":me.email}
             onChange={handleInput("email")}
           />
         </div>
