@@ -102,7 +102,7 @@ export const GlobalProvider = ({ children }) => {
       setMe(data.data);
       return data;
     } catch (error) {
-      toast.error(error.message);
+      isAuthenticated&&toast.error(error.message);
       console.log("Login error:", error.message);
       throw error;
     } finally {
